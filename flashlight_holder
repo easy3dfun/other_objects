@@ -1,0 +1,7 @@
+$fs=1;
+$fa=1;
+
+difference() {
+  translate([5,0,0]) cube([20, 30, 20], center=true);
+  cylinder(h=100, d=27, center=true);
+}
