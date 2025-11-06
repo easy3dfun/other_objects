@@ -1,7 +1,14 @@
 difference() {
-    cube([50,17,15], center=true);
-    translate([-15,0,0]) difference() {
-        cube([20,20,20], center=true);
-        cube([50,13,11], center=true);
-    };
+    part1(30);
+    translate([29,0,0]) part1(0);
+}
+
+module part1(fullsize) {
+    difference() {
+        cube([50,17,15], center=true);
+        translate([-fullsize,0,0]) difference() {
+            cube([50,20,20], center=true);
+            cube([50,13,11], center=true);
+        };
+    }
 }
