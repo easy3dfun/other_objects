@@ -1,6 +1,6 @@
 difference() {
     part1(30);
-    translate([29,0,0]) part1(0);
+    //translate([29,0,0]) part1(0);
 }
 
 module part1(fullsize) {
@@ -11,4 +11,5 @@ module part1(fullsize) {
             cube([50,13,11], center=true);
         };
     }
+    color([1,0,0]) translate([-25,0,0]) rotate([0,45,0]) cube([7,13,7], center=true);
 }
