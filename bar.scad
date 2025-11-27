@@ -1,18 +1,20 @@
-difference() {
-    part1(30);
-    translate([29,0,0]) part1(0);
+color([0,1,0,0.5]) thePart();
+
+translate([-25, 0, 0])
+  connector(15, 15, 30);
+
+module connector(w, d, h) {
+    color([0,0,1,0.5])
+          cube([w, d, h], center=true);
+    roof_size = (1/sqrt(2)) * d;
+    color([1,0,0,0.5])
+        translate([0, 0, h/2])
+            rotate([0,45,0])
+                cube([roof_size, w, roof_size], center=true);
 }
 
-module part1(fullsize) {
-    difference() {
-        cube([50,17,15], center=true);
-        translate([-fullsize,0,0]) difference() {
-            cube([50,20,20], center=true);
-            cube([50,13,11], center=true);
-        };
-    }
-    color([1,0,0])
-        translate([-25,0,0])
-            rotate([0,45,0])
-                cube([7.5,13,7.5], center=true);
+// The part of which we want to connect multiple of
+// Just a 17x15x50mm large bar
+module thePart() {
+      cube([17, 15, 50], center=true);
 }
