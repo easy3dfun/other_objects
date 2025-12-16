@@ -6,9 +6,9 @@ mount_d = 5;
 
 stick_distance = 30;
 
-bucket_height   = 300;
-bucket_d_top    = 300;
-bucket_d_bottom = 200;
+bucket_height   = 235;
+bucket_d_top    = 268;
+bucket_d_bottom = 195;
 
 cube([mount_w, mount_h, mount_d], center=true);
 
