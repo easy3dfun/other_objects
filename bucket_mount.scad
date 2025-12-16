@@ -28,7 +28,7 @@ module stick() {
     intersection() {
         rotate([ 60, 0, 0])
             cube([10,90,10], center=true);
-        translate([50, 0, 20])
+        translate([0, 0, 20])
             cube([mount_w, mount_h, 40], center=true);
     }
 }
