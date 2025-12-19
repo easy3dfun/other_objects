@@ -6,7 +6,7 @@ connector_h = 30;
 connector_w = 13;
 connector_d = 11;
 
-tolerance = 0.2;
+tolerance = 0.1;
 
 connector(connector_w, connector_d, connector_h, bar_h, false);
 
