@@ -1,0 +1,13 @@
+inner_h = 96;
+inner_w = 66;
+inner_d = 10;
+
+wall_thickness = 1;
+
+
+w2 = wall_thickness * 2;
+
+difference() {
+    cube([inner_h+w2, inner_h+w2, inner_d+w2], center=true);
+    translate([wall_thickness+w2/2,0,0]) cube([inner_h+w2+w2, inner_h, inner_d], center=true);
+}
