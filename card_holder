@@ -4,16 +4,34 @@ inner_h = 96;
 inner_w = 66;
 inner_d = 10;
 wall_thickness = 1;
+flap_thickness = 0.5;
 
+// --------------------------------------------------
+// Main
+// --------------------------------------------------
 
 translate([0,0,inner_d/2+wall_thickness])
-  rotate([0,0,-90])
-    linear_extrude(0.25)
-      text(version, halign="center", valign="center", size=4);
+    rotate([0,0,-90])
+      linear_extrude(0.25)
+        text(version, halign="center", valign="center", size=4);
 
-w2 = wall_thickness * 2;
+box();
+flap();
 
-difference() {
-    cube([inner_h+w2, inner_h+w2, inner_d+w2], center=true);
-    translate([wall_thickness+w2/2,0,0]) cube([inner_h+w2+w2, inner_h, inner_d], center=true);
+// --------------------------------------------------
+// Modules
+// --------------------------------------------------
+
+module flap() {
+    w2 = wall_thickness * 2;
+    translate([inner_h+w2, 0, -(inner_d+wall_thickness)/2])
+        cube([inner_h+w2, inner_w+w2, flap_thickness], center=true);
+}
+
+module box() {
+    w2 = wall_thickness * 2;
+    difference() {
+        cube([inner_h+w2, inner_w+w2, inner_d+w2], center=true);
+        translate([wall_thickness+w2/2,0,0]) cube([inner_h+w2*2, inner_w, inner_d], center=true);
+    }
 }
