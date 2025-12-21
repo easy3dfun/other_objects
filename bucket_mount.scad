@@ -1,10 +1,10 @@
 $fn=100;
 
-mount_w = 100;
-mount_h = 100;
+mount_w = 70;
+mount_h = 50;
 mount_d = 5;
 
-stick_distance = 30;
+stick_distance = 20; // Distance of each stick from the center
 
 bucket_height   = 235;
 bucket_d_top    = 268;
@@ -17,7 +17,7 @@ color([0.5, 0.5, 0.5])  difference() {
     bucket();
 }
 
-bucket();
+// bucket();
 
 module sticks() {
     translate([ stick_distance, 0, 0]) stick();
