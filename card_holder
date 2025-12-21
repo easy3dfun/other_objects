@@ -1,9 +1,15 @@
+version = "v1";
+
 inner_h = 96;
 inner_w = 66;
 inner_d = 10;
-
 wall_thickness = 1;
 
+
+translate([0,0,inner_d/2+wall_thickness])
+  rotate([0,0,-90])
+    linear_extrude(0.25)
+      text(version, halign="center", valign="center", size=4);
 
 w2 = wall_thickness * 2;
 
