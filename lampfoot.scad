@@ -1,4 +1,5 @@
-diameter = 30;
+foot_diameter = 30;
+foot_height   = 10;
 hole_diameter = 16;
 
 difference() {
@@ -11,15 +12,15 @@ module foot() {
     color([0.5, 0.5, 0.5])
     union() {
         rotate_extrude()
-            translate([diameter/2, 0, 0])
-                circle(r = diameter/2);
+            translate([foot_diameter/2-foot_height/2, 0, 0])
+                circle(r = foot_height/2);
         // fill the hole
-        cylinder(r = diameter/2, h = diameter, center = true);
+        cylinder(r = foot_diameter/2-foot_height/2, h = foot_height, center = true);
     }
 }
 
 module hole() {
     color("red")
-    translate([0, 0, -diameter/2])
-    cylinder(r = hole_diameter/2, h = diameter/2, center = true);
+    translate([0, 0, -foot_height/2])
+    cylinder(r = hole_diameter/2, h = foot_height, center = true);
 }
