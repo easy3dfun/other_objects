@@ -41,5 +41,5 @@ module connector(w, d, h, ph, inverse=false) {
 // The part of which we want to connect multiple of
 // Just a 17x15x50mm large bar
 module thePart(w, d, h) {
-  cube([17, 15, 50], center=true);
+  cube([bar_w, bar_d, bar_h], center=true);
 }
