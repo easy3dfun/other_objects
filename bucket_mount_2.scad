@@ -19,8 +19,14 @@ difference() {
     translate([0, -1.5, -3]) bucket_holder(10+tolerance, 10+tolerance, 90);
 }
 
+
 module new_holder() {
-    color ([1,0,0]) rim();
+    difference() {
+        color ([1,0,0]) rim();
+        translate([0,-12.4,0])
+        rotate([-30,0,0])
+        cube([1000,10,1000], center=true);
+    }
 
     difference() {
         sticks (12.4, 12.4, 90);
