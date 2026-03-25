@@ -1,5 +1,5 @@
 // Rendering settings for smoothness
-$fn = 100;
+$fn = 500;
 
 // Variables (dimensions in mm)
 outer_diameter = 150;
