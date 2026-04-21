@@ -1,7 +1,7 @@
 depth = 180;
 width = 40;
-h_start = 5;
-h_end = 40;
+h_start = 30;
+h_end = 50;
 
 polyhedron(
     points = [
