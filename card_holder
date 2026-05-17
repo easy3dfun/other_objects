@@ -1,10 +1,13 @@
-version = "v1";
+version = "v1.1";
 
 inner_h = 96;
-inner_w = 66;
+inner_w = 70;
 inner_d = 10;
-wall_thickness = 1;
-flap_thickness = 0.5;
+wall_thickness = 0.8;
+
+// Rounding settings
+radius = 3; // Radius of the rounded corners
+$fn = 32;   // Smoothness of the fragments
 
 // --------------------------------------------------
 // Main
@@ -16,22 +19,29 @@ translate([0,0,inner_d/2+wall_thickness])
         text(version, halign="center", valign="center", size=4);
 
 box();
-flap();
 
 // --------------------------------------------------
 // Modules
 // --------------------------------------------------
 
-module flap() {
-    w2 = wall_thickness * 2;
-    translate([inner_h+w2, 0, -(inner_d+wall_thickness*2-flap_thickness)/2])
-        cube([inner_h+w2, inner_w+w2, flap_thickness], center=true);
+module rounded_cube_x(size_x, size_y, size_z, r) {
+    // Extrudes along the X-axis to round the Y and Z dimensions
+    rotate([0, 90, 0])
+    linear_extrude(height = size_x, center = true) {
+        offset(r = r) {
+            square([size_z - 2*r, size_y - 2*r], center = true);
+        }
+    }
 }
 
 module box() {
     w2 = wall_thickness * 2;
     difference() {
-        cube([inner_h+w2, inner_w+w2, inner_d+w2], center=true);
-        translate([wall_thickness+w2/2,0,0]) cube([inner_h+w2*2, inner_w, inner_d], center=true);
+        // Outer box rounded along the X axis
+        rounded_cube_x(inner_h+w2, inner_w+w2, inner_d+w2, radius);
+        
+        // Inner cutout also rounded to maintain constant wall thickness
+        translate([wall_thickness+w2/2, 0, 0]) 
+            rounded_cube_x(inner_h+w2*2, inner_w, inner_d, max(0.1, radius - wall_thickness));
     }
 }
