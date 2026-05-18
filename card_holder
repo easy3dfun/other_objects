@@ -9,16 +9,23 @@ wall_thickness = 0.8;
 radius = 3; // Radius of the rounded corners
 $fn = 32;   // Smoothness of the fragments
 
+// Version text settings
+text_depth = 0.25;
+text_embed = 0.01;
+
 // --------------------------------------------------
 // Main
 // --------------------------------------------------
 
-translate([0,0,inner_d/2+wall_thickness])
-    rotate([0,0,-90])
-      linear_extrude(0.25)
-        text(version, halign="center", valign="center", size=4);
-
 box();
+
+// Place version text on the inside bottom strip.
+// The 96mm height runs along the X axis, so the bottom inside face is at X = -inner_h/2.
+translate([-inner_h/2 - text_embed, 0, 0])
+    rotate([0, 90, 0])
+        rotate([0, 0, 90])
+            linear_extrude(text_depth + text_embed)
+                text(version, halign="center", valign="center", size=4);
 
 // --------------------------------------------------
 // Modules
