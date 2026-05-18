@@ -10,7 +10,7 @@ radius = 3; // Radius of the rounded corners
 $fn = 32;   // Smoothness of the fragments
 
 // Version text settings
-text_depth = 0.25;
+text_depth = 0.2;
 text_embed = 0.01;
 
 // --------------------------------------------------
