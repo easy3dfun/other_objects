@@ -5,6 +5,9 @@ inner_w = 70;
 inner_d = 10;
 wall_thickness = 0.8;
 
+// Cutout settings
+cutout_radius = 18; // Radius for the thumb cutout
+
 // Rounding settings
 radius = 3; // Radius of the rounded corners
 $fn = 32;   // Smoothness of the fragments
@@ -50,5 +53,10 @@ module box() {
         // Inner cutout also rounded to maintain constant wall thickness
         translate([wall_thickness+w2/2, 0, 0]) 
             rounded_cube_x(inner_h+w2*2, inner_w, inner_d, max(0.1, radius - wall_thickness));
+            
+        // Thumb cutout for easy grabbing of the cards
+        // Placed at the top opening (+X edge) and cutting through the Z-axis (front and back faces)
+        translate([(inner_h+w2)/2, 0, 0])
+            cylinder(r=cutout_radius, h=inner_d + w2 + 10, center=true);
     }
 }
