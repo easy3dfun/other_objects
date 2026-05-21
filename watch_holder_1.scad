@@ -1,7 +1,7 @@
 /* 
   Rounded Open Wall
   Outer Dimensions: 42x16mm, 3mm high, 0.8mm thick.
-  One half of the long wall bends outward.
+  One half of the long wall bends outward, the other half bends inward.
 */
 
 // --- Parameters ---
@@ -10,12 +10,12 @@ width = 16;
 height = 3;
 thickness = 0.8;
 
-// How far the bent half pushes outward (in mm)
-bend_amount = 3; 
+// How far the bent halves push outward/inward (in mm)
+bend_amount = 1; 
 
 // How much the bent and unbent walls overlap each other horizontally (in mm)
 // Use a negative number to create a gap instead!
-overlap = 3;
+overlap = 6;
 
 // 8mm radius makes it a perfect capsule (half-circle ends) for a 16mm width.
 // Decrease this if you want a more rectangular box with rounded corners.
@@ -38,10 +38,20 @@ function arc(x, y, r, a1, a2, steps=24) =
 
 // Define the continuous path of the wall
 wall_path = concat(
-    // 1. Left half of the bottom wall (Extends to the right to create the overlap)
-    [[overlap/2, -W_mid/2], [-cx, -W_mid/2]],
+    // 1. Left half of the bottom wall (Bends INWARD)
+    [for (i=[0:29]) 
+        // t goes from 1 (at the overlapping tip) down to >0 (near the corner)
+        let(t = 1 - i/30)           
+        
+        // x moves leftwards from overlap/2, ending just before -cx
+        let(px = -cx + (cx + overlap/2)*t)     
+        
+        // Uses +bend_amount to push the wall inward towards the center
+        let(py = -W_mid/2 + bend_amount*(1-cos(t*90))) 
+        [px, py]
+    ],
     
-    // 2. Bottom-left corner
+    // 2. Bottom-left corner (starts exactly where the inward bend finishes)
     arc(-cx, -cy, R, 270, 180),
     
     // 3. Top-left corner (implicitly connects and draws the left wall)
@@ -53,15 +63,14 @@ wall_path = concat(
     // 5. Bottom-right corner (implicitly connects and draws the right wall)
     arc(cx, -cy, R, 360, 270),
     
-    // 6. Right half of the bottom wall (Bends outward, extending left to create overlap)
+    // 6. Right half of the bottom wall (Bends OUTWARD)
     [for (i=[1:30]) 
-        let(t = i/30)           // t goes from 0 to 1
+        let(t = i/30)           // t goes from >0 to 1
         
         // x moves leftwards from the corner, passing 0, and ending at -overlap/2
         let(px = cx - (cx + overlap/2)*t)     
         
-        // Uses a cosine curve for a smooth "leaf spring" bend. 
-        // For a straight angular flap instead, change this to: py = -W_mid/2 - (bend_amount * t)
+        // Uses -bend_amount to push the wall outward away from the center
         let(py = -W_mid/2 - bend_amount*(1-cos(t*90))) 
         [px, py]
     ]
