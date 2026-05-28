@@ -7,7 +7,11 @@ module watch_belt() {
     T = 0.8;         // wall thickness
 
     corner_r = 3;    // outside corner radius
-    bend = 0.75;      // bend amount: one half outward, the other inward
+    
+    // Individually controlled bend amounts for each half
+    bend_left = 1.75;  // bend amount for the left lower half (inward)
+    bend_right = 0;    // bend amount for the right lower half (outward)
+    
     overlap = 8;   // how much the two free halves overlap along the length
 
     corner_steps = 16;
@@ -29,8 +33,8 @@ module watch_belt() {
             // Bottom side:
             //   outward = negative Y
             //   inward  = positive Y
-            left_free_end  = [ overlap/2, -y + bend ],  // bent inward
-            right_free_end = [-overlap/2, -y - bend ],  // bent outward
+            left_free_end  = [ overlap/2, -y + bend_left ],  // uses bend_left
+            right_free_end = [-overlap/2, -y - bend_right ], // uses bend_right
 
             bl = [-x+r, -y+r],
             tl = [-x+r,  y-r],
