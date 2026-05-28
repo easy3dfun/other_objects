@@ -1,9 +1,9 @@
 module watch_belt() {
     // Rounded open wall with two opposite-bent overlapping long-side halves
 
-    L = 42;          // Inside length
-    W = 16;          // Inside width
-    H = 3;           // height
+    L = 43;          // Inside length
+    W = 16.5;          // Inside width
+    H = 3.5;           // height
     T = 0.8;         // wall thickness
 
     corner_r = 3;    // INSIDE corner radius
@@ -126,3 +126,4 @@ module watch_belt() {
         let(l = norm(v))
         l == 0 ? [0,0] : v / l;
 }
+
