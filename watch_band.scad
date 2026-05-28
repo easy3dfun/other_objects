@@ -4,8 +4,8 @@
 difference() {
     translate([-20.25, 0, 2])
         rotate([240, 0, 90]) watch_bridge(width=13);
-    translate([0, 0, 0.3])
-        cube([42, 16, 3], center=true);
+    translate([-18, 0, 1.5])
+        cube([5, 16, 4], center=true);
 }
 
 watch_belt();
