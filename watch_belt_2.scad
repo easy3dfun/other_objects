@@ -1,12 +1,12 @@
 module watch_belt() {
     // Rounded open wall with two opposite-bent overlapping long-side halves
 
-    L = 42;          // outside length
-    W = 16;          // outside width
+    L = 42;          // Inside length
+    W = 16;          // Inside width
     H = 3;           // height
     T = 0.8;         // wall thickness
 
-    corner_r = 3;    // outside corner radius
+    corner_r = 3;    // INSIDE corner radius
     
     // Individually controlled bend amounts for each half
     bend_left = 1.75;  // bend amount for the left lower half (inward)
@@ -24,10 +24,11 @@ module watch_belt() {
 
     function make_path() =
         let(
+            // Shift centerline outward by half the thickness
             hw = T / 2,
-            x  = L/2 - hw,
-            y  = W/2 - hw,
-            r  = corner_r - hw,
+            x  = L/2 + hw,
+            y  = W/2 + hw,
+            r  = corner_r + hw,
 
             // Positive overlap means the two free ends pass each other.
             // Bottom side:
