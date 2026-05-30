@@ -2,7 +2,7 @@
 wrist_width    = 60;       // Width of wrist (X-axis)
 wrist_depth    = 42;       // Depth of wrist (Y-axis)
 wall_thickness = 0.4;      // Thickness of the band wall
-wall_height    = 25;       // Width of the band on the wrist
+wall_height    = 10;       // Width of the band on the wrist
 open_angle     = 45;       // Gap size at the top in degrees
 hook_standoff  = 1;        // Distance the hook stands off from the band (NEW)
 hook_length    = 3;        // How far the hook reaches backward
