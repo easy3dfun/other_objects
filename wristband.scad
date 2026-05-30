@@ -4,7 +4,8 @@ wrist_depth    = 42;       // Depth of wrist (Y-axis)
 wall_thickness = 0.4;      // Thickness of the band wall
 wall_height    = 25;       // Width of the band on the wrist
 open_angle     = 45;       // Gap size at the top in degrees
-hook_length    = 5;        // How far the hook reaches backward
+hook_standoff  = 1;        // Distance the hook stands off from the band (NEW)
+hook_length    = 3;        // How far the hook reaches backward
 $fn            = 64;       // Smoothness of the curves
 
 // --- Point Generation ---
@@ -27,17 +28,23 @@ p_end   = arc_points[len(arc_points)-1];
 // Outward and backward vector calculations adjusted for the oval angle
 dir_out_start  = [sin(start_angle), cos(start_angle)];
 dir_back_start = [cos(start_angle), -sin(start_angle)]; 
-hook_tip_start = p_start + (dir_out_start * wall_thickness * 2) + (dir_back_start * hook_length);
+
+// Calculate standoff point and final hook tip for the start side
+p_standoff_start = p_start + (dir_out_start * hook_standoff);
+hook_tip_start   = p_standoff_start + (dir_back_start * hook_length);
 
 dir_out_end    = [sin(end_angle), cos(end_angle)];
 dir_back_end   = [-cos(end_angle), sin(end_angle)];   
-hook_tip_end   = p_end + (dir_out_end * wall_thickness * 2) + (dir_back_end * hook_length);
 
-// Combine all points into a single continuous path
+// Calculate standoff point and final hook tip for the end side
+p_standoff_end = p_end + (dir_out_end * hook_standoff);
+hook_tip_end   = p_standoff_end + (dir_back_end * hook_length);
+
+// Combine all points into a single continuous path including the standoffs
 points = concat(
-    [hook_tip_start], 
+    [hook_tip_start, p_standoff_start], 
     arc_points, 
-    [hook_tip_end]
+    [p_standoff_end, hook_tip_end]
 );
 
 // --- 3D Extrusion ---
