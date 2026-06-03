@@ -1,4 +1,4 @@
-version = "v1.2";
+version = "v1.3";
 
 inner_h = 96;
 inner_w = 69;
@@ -17,8 +17,8 @@ text_depth = 0.2;
 text_embed = 0.01;
 
 // Retention settings
-retention_depth = 6;      // Length of tapered section from opening
-retention_amount = 1;   // Total narrowing at opening (mm)
+retention_depth = 3;     // Total length of the retention section
+retention_amount = 0.5;   // Total narrowing at the middle (mm)
 
 // --------------------------------------------------
 // Main
@@ -50,6 +50,13 @@ module rounded_cube_x(size_x, size_y, size_z, r) {
 
 module box() {
     w2 = wall_thickness * 2;
+    
+    // Calculate the scaled dimensions for the narrowest point of retention
+    inner_d_narrow = inner_d - retention_amount;
+    inner_w_narrow = inner_w - retention_amount;
+    
+    // Calculate the radius to use for the inner shapes
+    inner_radius = max(0.1, radius - wall_thickness);
 
     difference() {
         // Outer box rounded along the X axis
@@ -60,42 +67,64 @@ module box() {
             radius
         );
 
-        // Main inner cavity (straight section)
+        // Main inner cavity (full size section, excluding the retention area)
+        // This is the back portion of the holder
         translate([
-            wall_thickness + w2/2 - retention_depth/2,
+            - (retention_depth / 2),
             0,
             0
         ])
         rounded_cube_x(
-            inner_h + w2*2 - retention_depth,
+            inner_h + w2 - retention_depth,
             inner_w,
             inner_d,
-            max(0.1, radius - wall_thickness)
+            inner_radius
         );
 
-        // Tapered retention section near the opening (+X end)
+        // Retention section at the top opening (+X end)
+        // This creates a narrowing in the middle and returns to full size at the edges
         translate([
-            (inner_h + w2)/2 - retention_depth/2 + wall_thickness,
+            (inner_h + w2) / 2 - retention_depth,
             0,
             0
-        ])
-        rotate([0, 90, 0])
-        linear_extrude(
-            height = retention_depth,
-            center = true,
-            scale = [
-                (inner_d - retention_amount) / inner_d,
-                (inner_w - retention_amount) / inner_w
-            ]
-        )
-        offset(r = max(0.1, radius - wall_thickness))
-        square([
-            inner_d - 2 * max(0.1, radius - wall_thickness),
-            inner_w - 2 * max(0.1, radius - wall_thickness)
-        ], center = true);
+        ]) {
+            // First half: from full size down to narrowest
+            translate([0, 0, 0])
+            rotate([0, 90, 0])
+            linear_extrude(
+                height = retention_depth / 2,
+                center = false,
+                scale = [
+                    inner_d_narrow / inner_d,
+                    inner_w_narrow / inner_w
+                ]
+            )
+            offset(r = inner_radius)
+            square([
+                inner_d - 2 * inner_radius,
+                inner_w - 2 * inner_radius
+            ], center = true);
+
+            // Second half: from narrowest back up to full size
+            translate([retention_depth / 2, 0, 0])
+            rotate([0, 90, 0])
+            linear_extrude(
+                height = retention_depth / 2,
+                center = false,
+                scale = [
+                    inner_d / inner_d_narrow,
+                    inner_w / inner_w_narrow
+                ]
+            )
+            offset(r = inner_radius)
+            square([
+                inner_d_narrow - 2 * inner_radius,
+                inner_w_narrow - 2 * inner_radius
+            ], center = true);
+        }
 
         // Thumb cutout for easy grabbing of the cards
-        // Placed at the top opening (+X edge) and cutting through the Z-axis (front and back faces)
+        // Placed at the top opening (+X edge)
         translate([(inner_h + w2)/2, 0, 0])
             cylinder(
                 r = cutout_radius,
