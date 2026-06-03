@@ -50,12 +50,10 @@ points = concat(
     [p_standoff_end, hook_tip_end]
 );
 
-// --- 3D Extrusion ---
 linear_extrude(height = wall_height) {
     poly_line(points, wall_thickness);
 }
 
-// --- Your Original Module ---
 module poly_line(pts, thickness) {
     for (i = [0 : len(pts) - 2]) {
         hull() {
