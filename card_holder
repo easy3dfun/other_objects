@@ -16,6 +16,10 @@ $fn = 32;   // Smoothness of the fragments
 text_depth = 0.2;
 text_embed = 0.01;
 
+// Retention settings
+retention_depth = 6;      // Length of tapered section from opening
+retention_amount = 1;   // Total narrowing at opening (mm)
+
 // --------------------------------------------------
 // Main
 // --------------------------------------------------
@@ -46,17 +50,57 @@ module rounded_cube_x(size_x, size_y, size_z, r) {
 
 module box() {
     w2 = wall_thickness * 2;
+
     difference() {
         // Outer box rounded along the X axis
-        rounded_cube_x(inner_h+w2, inner_w+w2, inner_d+w2, radius);
-        
-        // Inner cutout also rounded to maintain constant wall thickness
-        translate([wall_thickness+w2/2, 0, 0]) 
-            rounded_cube_x(inner_h+w2*2, inner_w, inner_d, max(0.1, radius - wall_thickness));
-            
+        rounded_cube_x(
+            inner_h + w2,
+            inner_w + w2,
+            inner_d + w2,
+            radius
+        );
+
+        // Main inner cavity (straight section)
+        translate([
+            wall_thickness + w2/2 - retention_depth/2,
+            0,
+            0
+        ])
+        rounded_cube_x(
+            inner_h + w2*2 - retention_depth,
+            inner_w,
+            inner_d,
+            max(0.1, radius - wall_thickness)
+        );
+
+        // Tapered retention section near the opening (+X end)
+        translate([
+            (inner_h + w2)/2 - retention_depth/2 + wall_thickness,
+            0,
+            0
+        ])
+        rotate([0, 90, 0])
+        linear_extrude(
+            height = retention_depth,
+            center = true,
+            scale = [
+                (inner_d - retention_amount) / inner_d,
+                (inner_w - retention_amount) / inner_w
+            ]
+        )
+        offset(r = max(0.1, radius - wall_thickness))
+        square([
+            inner_d - 2 * max(0.1, radius - wall_thickness),
+            inner_w - 2 * max(0.1, radius - wall_thickness)
+        ], center = true);
+
         // Thumb cutout for easy grabbing of the cards
         // Placed at the top opening (+X edge) and cutting through the Z-axis (front and back faces)
-        translate([(inner_h+w2)/2, 0, 0])
-            cylinder(r=cutout_radius, h=inner_d + w2 + 10, center=true);
+        translate([(inner_h + w2)/2, 0, 0])
+            cylinder(
+                r = cutout_radius,
+                h = inner_d + w2 + 10,
+                center = true
+            );
     }
 }
