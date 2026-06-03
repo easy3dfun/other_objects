@@ -1,5 +1,5 @@
 //> include_bottom watch_bridge.scad
-//> include_bottom watch_belt_2.scad
+//> include_bottom watch_belt.scad
 
 difference() {
     translate([-21, 0, 2.5])
