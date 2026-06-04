@@ -17,7 +17,7 @@ text_depth = 0.2;
 text_embed = 0.01;
 
 // Retention settings
-retention_depth = 3;     // Total length of the retention section
+retention_depth  =   3;     // Total length of the retention section
 retention_amount = 0.5;   // Total narrowing at the middle (mm)
 
 // --------------------------------------------------
@@ -74,8 +74,9 @@ module box() {
             0,
             0
         ])
+        translate([wall_thickness/2,0,0])
         rounded_cube_x(
-            inner_h + w2 - retention_depth,
+            inner_h + w2 - retention_depth - wall_thickness,
             inner_w,
             inner_d,
             inner_radius
