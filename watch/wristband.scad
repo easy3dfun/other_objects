@@ -1,13 +1,13 @@
 // --- Parameters ---
 wrist_width        = 60;  // Width of wrist (X-axis)
 wrist_depth        = 42;  // Depth of wrist (Y-axis)
-wall_thickness     = 0.4; // Thickness of the band wall
+wall_thickness     = 0.48; // Thickness of the band wall
 wall_height        = 10;  // Width of the band on the wrist
 open_angle         = 40;  // Gap size at the top in degrees
-hook_standoff_left = 1.2; // Distance the left hooks stand off from the band (gap)
-hook_standoff_right= 1.6; // Distance the right hooks stand off from the band (gap)
+hook_standoff_left = 1.8; // Distance the left hooks stand off from the band (gap)
+hook_standoff_right= 2; // Distance the right hooks stand off from the band (gap)
 hook_length        = 1.6; // How far the hook reaches backward
-hook_spacing_angle = 6;   // Distance between first and second hook in degrees
+hook_spacing_angle = 8;   // Distance between first and second hook in degrees
 $fn                = 64;  // Smoothness of the curves
 
 // --- Core Math ---
