@@ -3,7 +3,7 @@ version = "v1.3";
 inner_h = 96;
 inner_w = 69;
 inner_d = 10.5;
-wall_thickness = 0.4;
+wall_thickness = 0.48;
 
 // Cutout settings
 cutout_radius = 18; // Radius for the thumb cutout
