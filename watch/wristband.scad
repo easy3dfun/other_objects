@@ -7,7 +7,6 @@ open_angle         = 35;  // Gap size at the top in degrees
 hook_standoff_left = 2.6; // Distance the left hooks stand off from the band (gap)
 hook_standoff_right= 2.8; // Distance the right hooks stand off from the band (gap)
 hook_length        = 4; // How far the hook reaches backward
-hook_spacing_angle = 18;   // Distance between first and second hook in degrees
 $fn                = 64;  // Smoothness of the curves
 
 // --- Core Math ---
@@ -20,7 +19,7 @@ step = 5;
 // Generate core arc points
 arc_points = [for (a = [start_angle : step : end_angle]) [x_radius * sin(a), y_radius * cos(a)]];
 
-// Hook 1 positions (at the very ends)
+// Hook positions (at the very ends)
 p_start_1 = arc_points[0];
 p_end_1   = arc_points[len(arc_points)-1];
 
@@ -30,19 +29,6 @@ dir_back_start_1 = [cos(start_angle), -sin(start_angle)];
 dir_out_end_1    = [sin(end_angle), cos(end_angle)];
 dir_back_end_1   = [-cos(end_angle), sin(end_angle)];   
 
-// Hook 2 positions (further down the band)
-start_angle_2 = start_angle + hook_spacing_angle;
-end_angle_2   = end_angle - hook_spacing_angle;
-
-p_start_2 = [x_radius * sin(start_angle_2), y_radius * cos(start_angle_2)];
-p_end_2   = [x_radius * sin(end_angle_2),   y_radius * cos(end_angle_2)];
-
-dir_out_start_2  = [sin(start_angle_2), cos(start_angle_2)];
-dir_back_start_2 = [cos(start_angle_2), -sin(start_angle_2)]; 
-
-dir_out_end_2    = [sin(end_angle_2), cos(end_angle_2)];
-dir_back_end_2   = [-cos(end_angle_2), sin(end_angle_2)];   
-
 // --- 3D Render ---
 linear_extrude(height = wall_height) {
     // Draw the main C-band
@@ -51,10 +37,6 @@ linear_extrude(height = wall_height) {
     // Draw Primary Hooks (Outer)
     hook(p_start_1, dir_out_start_1, dir_back_start_1, hook_standoff_left, hook_length, wall_thickness);
     hook(p_end_1, dir_out_end_1, dir_back_end_1, hook_standoff_right, hook_length, wall_thickness);
-    
-    // Draw Secondary Hooks (Inner Adjustment)
-    hook(p_start_2, dir_out_start_2, dir_back_start_2, hook_standoff_left, hook_length, wall_thickness);
-    hook(p_end_2, dir_out_end_2, dir_back_end_2, hook_standoff_right, hook_length, wall_thickness);
 }
 
 // --- Modules ---
