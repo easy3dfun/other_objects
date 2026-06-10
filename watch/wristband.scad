@@ -2,7 +2,8 @@
 wrist_width        = 60;  // Width of wrist (X-axis)
 wrist_depth        = 42;  // Depth of wrist (Y-axis)
 wall_thickness     = 0.48; // Thickness of the band wall
-wall_height        = 10;  // Width of the band on the wrist
+wall_height_start  = 10;  // Height at the beginning of the band
+wall_height_end    = 8;   // Height at the end of the band
 open_angle         = 260;  // Gap size in degrees
 gap_rotation       = 74;   // Where the band is open (0 = top, 90 = right, 180 = bottom, 270 = left)
 hook_standoff_left = 2.6; // Distance the left hooks stand off from the band (gap)
@@ -21,6 +22,7 @@ step = 5;
 
 // Generate core arc points
 arc_points = [for (a = [start_angle : step : end_angle]) [x_radius * sin(a), y_radius * cos(a)]];
+num_segments = len(arc_points) - 1;
 
 // Hook positions (at the very ends)
 p_start_1 = arc_points[0];
@@ -33,12 +35,25 @@ dir_out_end_1    = [sin(end_angle), cos(end_angle)];
 dir_back_end_1   = [-cos(end_angle), sin(end_angle)];   
 
 // --- 3D Render ---
-linear_extrude(height = wall_height) {
-    // Draw the main C-band
-    poly_line(arc_points, wall_thickness);
+
+// Draw the main C-band with symmetrical tapering height
+for (i = [0 : num_segments - 1]) {
+    // Calculate interpolated height for the current segment
+    h_start = wall_height_start + (wall_height_end - wall_height_start) * (i / num_segments);
+    h_end   = wall_height_start + (wall_height_end - wall_height_start) * ((i + 1) / num_segments);
     
-    // Draw Primary Hooks (Outer)
+    hull() {
+        linear_extrude(height = h_start, center = true) translate(arc_points[i]) circle(d = wall_thickness, $fn = 16);
+        linear_extrude(height = h_end, center = true) translate(arc_points[i+1]) circle(d = wall_thickness, $fn = 16);
+    }
+}
+
+// Draw Primary Hooks (Outer) centered vertically to match the band ends
+linear_extrude(height = wall_height_start, center = true) {
     hook(p_start_1, dir_out_start_1, dir_back_start_1, hook_standoff_left, hook_length, wall_thickness);
+}
+
+linear_extrude(height = wall_height_end, center = true) {
     hook(p_end_1, dir_out_end_1, dir_back_end_1, hook_standoff_right, hook_length, wall_thickness);
 }
 
