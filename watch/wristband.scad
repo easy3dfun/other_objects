@@ -3,17 +3,20 @@ wrist_width        = 60;  // Width of wrist (X-axis)
 wrist_depth        = 42;  // Depth of wrist (Y-axis)
 wall_thickness     = 0.48; // Thickness of the band wall
 wall_height        = 10;  // Width of the band on the wrist
-open_angle         = 35;  // Gap size at the top in degrees
+open_angle         = 260;  // Gap size in degrees
+gap_rotation       = 74;   // Where the band is open (0 = top, 90 = right, 180 = bottom, 270 = left)
 hook_standoff_left = 2.6; // Distance the left hooks stand off from the band (gap)
 hook_standoff_right= 2.8; // Distance the right hooks stand off from the band (gap)
-hook_length        = 4; // How far the hook reaches backward
+hook_length        = 4;   // How far the hook reaches backward
 $fn                = 64;  // Smoothness of the curves
 
 // --- Core Math ---
 x_radius = wrist_width / 2;
 y_radius = wrist_depth / 2;
-start_angle = open_angle / 2;
-end_angle = 360 - (open_angle / 2);
+
+// Adjusted start and end angles based on the gap rotation parameter
+start_angle = (open_angle / 2) + gap_rotation;
+end_angle = 360 - (open_angle / 2) + gap_rotation;
 step = 5; 
 
 // Generate core arc points
