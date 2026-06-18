@@ -36,24 +36,24 @@ dir_back_end_1   = [-cos(end_angle), sin(end_angle)];
 
 // --- 3D Render ---
 
-// Draw the main C-band with symmetrical tapering height
+// Draw the main C-band with tapering height resting flat on Z=0
 for (i = [0 : num_segments - 1]) {
     // Calculate interpolated height for the current segment
     h_start = wall_height_start + (wall_height_end - wall_height_start) * (i / num_segments);
     h_end   = wall_height_start + (wall_height_end - wall_height_start) * ((i + 1) / num_segments);
     
     hull() {
-        linear_extrude(height = h_start, center = true) translate(arc_points[i]) circle(d = wall_thickness, $fn = 16);
-        linear_extrude(height = h_end, center = true) translate(arc_points[i+1]) circle(d = wall_thickness, $fn = 16);
+        linear_extrude(height = h_start, center = false) translate(arc_points[i]) circle(d = wall_thickness, $fn = 16);
+        linear_extrude(height = h_end, center = false) translate(arc_points[i+1]) circle(d = wall_thickness, $fn = 16);
     }
 }
 
-// Draw Primary Hooks (Outer) centered vertically to match the band ends
-linear_extrude(height = wall_height_start, center = true) {
+// Draw Primary Hooks (Outer) resting flat on Z=0 to match the band ends
+linear_extrude(height = wall_height_start, center = false) {
     hook(p_start_1, dir_out_start_1, dir_back_start_1, hook_standoff_left, hook_length, wall_thickness);
 }
 
-linear_extrude(height = wall_height_end, center = true) {
+linear_extrude(height = wall_height_end, center = false) {
     hook(p_end_1, dir_out_end_1, dir_back_end_1, hook_standoff_right, hook_length, wall_thickness);
 }
 
